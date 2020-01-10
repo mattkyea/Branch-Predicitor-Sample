@@ -10,14 +10,23 @@ if(x==5){
 }
 
 These branches are neccessary for most programs, but can cause delays due to pipelining. Modern processors use instruction pipelining to have the CPU running as much as possible. For example, one part of the CPU fetches instructions, while another part decodes these instructions. Without pipelining, one instruction will go through each stage of the processor before the next instruction is fetched, like below:
-![alt text](http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-1-5.png)
+
+<p align="center">
+  <img src="http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-1-5.png">
+</p>
+
 
 Doing so results in wasted time: instead, we can begin fetching the next instruction as soon as our previous instruction is done using the fetch hardware. This reduces the number of cycles from 15 to 7 in our example:
-![alt text](http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-2-3.png)
+
+<p align="center">
+  <img src="http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-2-3.png">
+</p>
 
 However, this improvement comes at a cost. Now, we must pause execution when we reach a conditional branch, causing a bottleneck. This is because we need to access values that have not been stored in memory to access yet. Consider this example:
 
-![alt text](https://image.slidesharecdn.com/bp-presentation-160623083606/95/comp-architecture-branch-prediction-13-638.jpg?cb=1487938494)
+<p align="center">
+  <img src="https://image.slidesharecdn.com/bp-presentation-160623083606/95/comp-architecture-branch-prediction-13-638.jpg?cb=1487938494">
+</p>
 
 Instruction 3 is a conditional branch that will jump to another part of the code labeled with the title "loop" if the value stored in register 1 equals 0. Otherwise (register 1 does not contain the value 0), we will not branch and execute instructions 4 and 5 before also jumping to "loop." Due to our pipeline, this code will take 14 cycles to complete ("jmp loop" will complete at cycle 14) rather than the expected 10 cycles if it were fetched in cycle 6. This is caused by a bubble - we need to see if we should branch or not before fetching instruction 4 in cycle 4, but this decision is not avaiable until cycle 7, when the 3rd instruction finishes executing. This results in the processor stalling for 4 cycles, where no work is done and we waste time. 
 
@@ -27,6 +36,8 @@ Branch prediction is more complex than inserting a stall, but with well-designed
 
 A two-bit predictor works by following this state machine:
 
-![alt text](https://user.eng.umd.edu/~yavuz/enee446/images-446/2-bitbranchpredictor.gif)
+<p align="center">
+  <img src="https://user.eng.umd.edu/~yavuz/enee446/images-446/2-bitbranchpredictor.gif">
+</p>
 
 We start at state 00, not taken. Therefore, our first prediction will be to not take the branch. When we obtain the true result, we use that to change states. If we were correct, we stay at state 00. If we were incorrect, we move to state 01, which also predicts not taken. This system allows us to make two consecutive incorrect predictions before changing our prediction. 
