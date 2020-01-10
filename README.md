@@ -1,13 +1,13 @@
 # Branch-Predictor-Sample
-A short sample of my Branch Predictor code for my Advanced Computer Architecture class. 
+A short sample of my Branch Predictor code for my Advanced Computer Architecture class. Here, I include only a sample of my code to prevent future students from copying a full implementation while still showing the idea behind the project. 
 
 The goal of this program was to create software implementations of various hardware systems that a computer uses in the process of branch prediction. Almost all code that runs on your computer contains branches, which will check a condition to be true or false, then run a certain chunk of code depending on this condition. For example:
 
-if(x==5){
-  //run this code when x equals 5
-}else{
-  //run this code when x does not equal 5
-}
+    if(x==5){
+      //run this code when x equals 5
+    }else{
+      //run this code when x does not equal 5
+    }
 
 These branches are neccessary for most programs, but can cause delays due to pipelining. Modern processors use instruction pipelining to have the CPU running as much as possible. For example, one part of the CPU fetches instructions, while another part decodes these instructions. Without pipelining, one instruction will go through each stage of the processor before the next instruction is fetched, like below:
 
@@ -32,7 +32,7 @@ Instruction 3 is a conditional branch that will jump to another part of the code
 
 There are ways of reducing the number of cycles a bubble takes (like data forwarding), but there is no way to completely remove the stall without branch prediction. The basic idea behind branch prediction is to take the bubble out of the equation by deciding the results of the branch before it is ready. In other words, we use previous branch results to decide the outcome of our current branch. If our branch predictor sees that the last 10 branches have been taken, there is likely a high probablity that this current branch will also be taken (something that can often happen in loops). So, by using a branch predictor, which is implemented as a piece of hardware, we can tell the CPU to either continue fetching the next instruction or to jump elsewhere in the code. By doing so, we prevent bubbles from occurring. Modern predictors are very accurate, but occassionally make the wrong decision. To check for this, predictors save the addresses of code that we decided not to execute, then tell the CPU to continue executing the branch while it also fetches the instruction based on our predicition. In doing so, we can begin executing instructions while we simultaneously finish the branch instruction. Therefore, we also recieve the correct result of each predicted branch, allowing us to compare our prediction against the actual result. If the values match (both taken or both not taken), we predicted successfully, and continue executing. If our prediction was incorrect, we use the saved address of the code we did not execute to jump to where we need to be, then discard or "flush" the instructions we incorrectly started executing. 
 
-Branch prediction is more complex than inserting a stall, but with well-designed predictors, we can achieve faster processing speeds. For this project, I was tasked with implementing several real-world branch predictors in software. I successfully wrote code for 6 different branch predictors. Here, I include a sample of my two-bit bimodal predictor to prevent future students from copying a full implementation while still showing the idea behind my code. 
+Branch prediction is more complex than inserting a stall, but with well-designed predictors, we can achieve faster processing speeds. For this project, I was tasked with implementing several real-world branch predictors in software. I successfully wrote code for 6 different branch predictors. In this repo, I have included a sample of my two-bit bimodal predictor. 
 
 A two-bit predictor works by following this state machine:
 
