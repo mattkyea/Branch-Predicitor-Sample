@@ -11,5 +11,8 @@ if(x==5){
 
 These branches are neccessary for most programs, but can cause delays due to pipelining. Modern processors use instruction pipelining to have the CPU running as much as possible. For example, one part of the CPU fetches instructions, while another part decodes these instructions. Without pipelining, one instruction will go through each stage of the processor before the next instruction is fetched, like below:
 ![alt text](http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-1-5.png)
-Doing so results in wasted time: we can begin fetching the next instruction as soon as our previous instruction is done using the fetch hardware. 
+
+Doing so results in wasted time: instead, we can begin fetching the next instruction as soon as our previous instruction is done using the fetch hardware. This reduces the number of cycles from 15 to 7 in our example:
 ![alt text](http://simplecore-ger.intel.com/techdecoded/wp-content/uploads/sites/11/figure-2-3.png)
+
+However, this improvement comes at a cost. 
