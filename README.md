@@ -1,5 +1,5 @@
 ## What is this?
-A short sample of my Branch Predictor code for my Advanced Computer Architecture class. Here, I include only a sample of my code to prevent future students from copying a full implementation while still showing the idea behind the project. 
+A short sample of my Branch Predictor code for my Advanced Computer Architecture class (CS320). Here, I include only a sample of my code to prevent future students from copying a full implementation while still showing the idea behind the project. 
 
 ## What is branch prediction?
 The goal of this program was to create software implementations of various hardware systems that a computer uses in the process of branch prediction. Almost all code that runs on your computer contains branches, which will check a condition to be true or false, then run a certain chunk of code depending on this condition. For example:
