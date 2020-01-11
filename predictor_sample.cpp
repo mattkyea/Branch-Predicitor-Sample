@@ -101,10 +101,3 @@ void twoBitPredict(string behavior, long index, int currTable, string** (&table)
 //used vectors instead of arrays, with simpler and cleaner initilization of values 
 //found a cleaner way of using my arrays instead of my 2D array system - I find it a little clunky 
 //like my second point, clean up a little more in terms of my methods - I feel like I passed a lot of parameters which can seem confusing to others
-
-
-
-
-
-
-
