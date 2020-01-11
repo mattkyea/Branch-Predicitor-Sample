@@ -44,4 +44,4 @@ A two-bit predictor works by following this state machine:
   <img src="https://user.eng.umd.edu/~yavuz/enee446/images-446/2-bitbranchpredictor.gif">
 </p>
 
-We start at state 00, not taken. Therefore, our first prediction will be to not take the branch. When we obtain the true result, we use that to change states. If we were correct, we stay at state 00. If we were incorrect, we move to state 01, which also predicts not taken. This system allows us to make two consecutive incorrect predictions before changing our prediction. 
+We start at state 11, strongly taken. Therefore, our first prediction will be to take the branch. When we obtain the true result, we use that to change states. If we were correct, we stay at state 11. If we were incorrect, we move to state 10, which is weakly taken. This system allows us to make two consecutive incorrect predictions before changing our prediction. 
