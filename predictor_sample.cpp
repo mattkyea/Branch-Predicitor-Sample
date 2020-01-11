@@ -7,30 +7,35 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-	// Open file for reading
-    ifstream infile(argv[1]);
-    //each line of the file was a branch instruction, containing the branch's address, target address (both in hexadecimal), and the correct prediction (taken/T, not taken/NT)
-	string addr, behavior, target;
-	//open file for writing
-	ofstream outfile(argv[2]);
-	int total=0;//total number of branches (required to check accuracy)
-	string ** table = new string*[30];//a 2D array of string arrays to store my predictions 
-    //for example, table[2] through table[8] stores the predictions of my one bit predictor, and table[9] through table[15] stores the two bit predictions
-    //I needed several tables for each predictor due to the project's requirements to test the predictors with different table sizes (16 entries, 32 entries, .. to 2048 entries)
+    ifstream infile(argv[1]);//Open input file for reading
+    //each line of the file is a branch instruction, containing the branch's address, target address (both in hexadecimal), 
+    	//and the correct prediction (taken/T, not taken/NT)
+    string addr, behavior, target;//use to store the values described above
+    ofstream outfile(argv[2]);//open file for writing
+    int total=0;//total number of branches (required to check accuracy at end)
+    string ** table = new string*[30];//a 2D array of string arrays to store my predictions 
+    //for example, table[2] through table[8] stores the predictions of my one bit predictor, and table[9] through table[15] 
+    	//store the two bit predictions
+    //I needed several tables for each predictor due to the project's requirements to test the predictors with different table sizes
+	//(16 entries, 32 entries, .. to 2048 entries)
     //These different table sizes result in different accuracies 
     //if our table can hold 16 values, then all addresses that end with the same 4 bits map to the same index in the table (as 2^4 = 16)
-    //Another way of thinking about this is that every address must map to some index in the table, but due to limited size, different addresses will map to the same index of the table
-    //So, some addresses might be accessed for the first time, but due to being mapped to a location that has already been accessed, may use another addresses's prediction
+    //Another way of thinking about this is that every address must map to some index in the table, but due to limited size,
+	//different addresses will map to the same index of the table
+    //So, some addresses might be accessed for the first time, but due to being mapped to a location that has already been accessed, 
+	//may use another addresses's prediction
     for(int i = 0; i< 30; i++){
-		table[i] = new string[2048];//each array can store a maximum of 2048 entries, so I just gave each table the maximum for convience
+		table[i] = new string[2048];//each array can store a maximum of 2048 entries, so I just 
+	    		//gave each table the maximum for convience
+     }
+    for(int r = 0; r<30; r++){//nested loop used to initialize our prediction tables
+	for(int c=0; c<2048; c++){
+ 		if (r>8 && r<16) table[r][c] = "11";//for the two bit predictor, I was instructed to start at state 11
+			//- strongly taken - so I initalized all values in table[9] - table[15] as "11"
 	}
-	for(int r = 0; r<30; r++){//nested loop used to initialize our prediction tables
-		for(int c=0; c<2048; c++){
-			if (r>8 && r<16) table[r][c] = "11";//for the two bit predictor, I was instructed to start at state 11 - strongly taken - so I initalized all values in table[9] - table[15] as "11"
-		}
-	}
-	while(infile >> addr >> behavior >> target) {//loop through the input, and call twoBitBimodal with various table sizes of 16 through 2048 with table indexes 9 through 15
-		//two bit bimodal, occupies correct[9-15], table[9-15]
+     }
+     while(infile >> addr >> behavior >> target) {//loop through the input, and call twoBitBimodal with various table sizes of 16 through 2048 with table indexes 9 through 15
+	//two bit bimodal, occupies correct[9-15], table[9-15]
 		tableSize = 16;
 		for(int j = 0; j< 7; j ++){
 			twoBitBimodal(addr, behavior, table, correct, tableSize, currTable);
