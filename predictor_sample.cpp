@@ -34,28 +34,35 @@ int main(int argc, char *argv[]) {
 			//- strongly taken - so I initalized all values in table[9] - table[15] as "11"
 	}
      }
-     while(infile >> addr >> behavior >> target) {//loop through the input, and call twoBitBimodal with various table sizes of 16 through 2048 with table indexes 9 through 15
+     while(infile >> addr >> behavior >> target) {//loop through the input, and call twoBitBimodal with various table 
+	     //sizes of 16 through 2048 with table indexes 9 through 15
 	//two bit bimodal, occupies correct[9-15], table[9-15]
-		tableSize = 16;
-		for(int j = 0; j< 7; j ++){
-			twoBitBimodal(addr, behavior, table, correct, tableSize, currTable);
-            //So, for line x of the input, I first call the method with table size 16, table index 9, then record the result in an array
-			tableSize *= 2;
-			currTable++;
-            //After recording the result, I increment the table size and index, and run the method on line x with these new parameters
-            //the method is called with our: branch address in hex, a reference to our table array (which contains all prediction tables, and can be edited as it is a reference),
-            //a reference to an array used to keep track of how many predictions we have gotten right for this specific case, our table size, and our current table in our table 2D array
-		}
+	tableSize = 16;
+	for(int j = 0; j< 7; j ++){
+		twoBitBimodal(addr, behavior, table, correct, tableSize, currTable);
+            	//So, for line x of the input, I first call the method with table size 16, table index 9, then record the result 
+			//in an array
+		tableSize *= 2;
+		currTable++;
+            	//After recording the result, I increment the table size and index, and run the method on line x with these 
+			//new parameters
+            	//the method is called with our: branch address in hex, a reference to our table array (which contains all 
+			//prediction tables, and can be edited as it is a reference), a reference to an array used to keep 
+			//track of how many predictions we have gotten right for this specific case, our table size, and 
+			//our current table in our table 2D array
+	}
         total++;//number of branch instructions tested increased by 1
     }
 	return 0;
 }
 
 void twoBitBimodal(string addr, string behavior, string** (&table), int (&correct)[30], int tableSize, int currTable){
-	int index = bimodalIndex(tableSize, addr);//first, I call a method to determine how many bits of our address to use as an index into the table
+	int index = bimodalIndex(tableSize, addr);//first, I call a method to determine how many bits of our address to use 
+		//as an index into the table
 	twoBitPredict(behavior, index, currTable, table, correct);//next call the method that handles the actual prediction
-    //twoBitPredict takes the actual behavior of the branch (T or NT), the index we just computed, the current table in our table 2D array, a reference to our table 2D array,
-    //and a reference to our array used to keep track of how many predictions we have gotten right 
+    	//twoBitPredict takes the actual behavior of the branch (T or NT), the index we just computed, the current table in our 
+		//table 2D array, a reference to our table 2D array, and a reference to our array used to keep track of how many 
+		//predictions we have gotten right 
 }
 
 int bimodalIndex(int tableSize, string addr){
@@ -69,7 +76,8 @@ int bimodalIndex(int tableSize, string addr){
 }
 
 void twoBitPredict(string behavior, long index, int currTable, string** (&table), int (&correct)[30]){
-    //finally, the method that checks our current prediction against the actual, determines if its correct, and updates our predictor if necessary
+    //finally, the method that checks our current prediction against the actual, determines if its correct, and updates 
+	//our predictor if necessary
 	if((behavior == "T" && (table[currTable][index] == "11" || table[currTable][index] == "10")) || (behavior == "NT" && (table[currTable][index] == "00" || table[currTable][index] == "01"))){
 		//long if statement that is true if our prediction is right
         correct[currTable] = correct[currTable]+1;//add 1 to number of correct predictions for this branch predictor
